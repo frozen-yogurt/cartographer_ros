@@ -23,11 +23,11 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" />
 
-  <node name="cartographer_grpc_server" pkg="cartographer_ros"
+  <!-- <node name="cartographer_grpc_server" pkg="cartographer_ros"
       type="cartographer_grpc_server.sh" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
           -configuration_basename backpack_2d_server.lua">
-  </node>
+  </node> -->
 
   <node name="cartographer_grpc_node" pkg="cartographer_ros"
       type="cartographer_grpc_node" args="
