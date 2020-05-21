@@ -27,13 +27,13 @@
       type="cartographer_grpc_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
           -configuration_basename backpack_2d.lua
-          -map_filename $(arg map_filename)"
+          -load_state_filename $(arg load_state_filename)"
       output="screen">
     <remap from="echoes" to="horizontal_laser_2d" />
   </node>
 
   <node name="playbag" pkg="rosbag" type="play"
         args="--clock $(arg bag_filename)" />
-  <node name="rviz" pkg="rviz" type="rviz" required="true"
-      args="-d $(find cartographer_ros)/configuration_files/demo_2d.rviz" />
+  <!-- <node name="rviz" pkg="rviz" type="rviz" required="true"
+      args="-d $(find cartographer_ros)/configuration_files/demo_2d.rviz" /> -->
 </launch>
