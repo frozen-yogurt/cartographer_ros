@@ -25,6 +25,17 @@ install(TARGETS cartographer_assets_writer
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+google_binary(cartographer_map_store
+  SRCS
+    map_store.cc
+)
+
+install(TARGETS cartographer_map_store
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
 google_binary(cartographer_node
   SRCS
     node_main.cc

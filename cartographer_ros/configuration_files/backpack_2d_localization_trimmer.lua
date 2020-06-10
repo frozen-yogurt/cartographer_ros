@@ -16,9 +16,12 @@ include "backpack_2d.lua"
 
 TRAJECTORY_BUILDER.pure_localization = false
 TRAJECTORY_BUILDER.overlapping_submaps_trimmer_2d = {
+  -- same cell, trim after the latest 'fresh_submaps_count'
   fresh_submaps_count = 1,
-  min_covered_area = 1,
-  min_added_submaps_count = 4,
+  -- submap convers area < min_covered_area might be trimmed
+  min_covered_area = 8,
+  -- submap not be trimmed > min_added_submaps_count to continue trimming
+  min_added_submaps_count = 1,
 }
 POSE_GRAPH.optimize_every_n_nodes = 20
 
