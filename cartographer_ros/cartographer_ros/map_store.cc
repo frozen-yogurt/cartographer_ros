@@ -12,7 +12,7 @@
 static bool start_flag = false;
 
 static int cnt = 0;
-static std::string path = "/home/box/Downloads/map_store/";
+static std::string path = "/home/box/Downloads/mappng/";
 
 void check_submap_list(const cartographer_ros_msgs::SubmapListConstPtr& submap_list){
   if (start_flag) return;
@@ -55,10 +55,13 @@ void save_image(const std::vector<uint8_t>& buffer, std::string strPath, int nIm
 void callback(const nav_msgs::OccupancyGridConstPtr& data){
 
 
-	static int w, h, offset_x, offset_y;
-	static float resolution, origin_x, origin_y, target_image_size, scale, factor, map_resolution, map_origin_x, map_origin_y;
+	// static int w, h, offset_x, offset_y;
+	// static float resolution, origin_x, origin_y, target_image_size, scale, factor, map_resolution, map_origin_x, map_origin_y;
+	static int w, h;
+	static float resolution, origin_x, origin_y;
 
-	std::string imagePath, yamlPath;
+	// std::string imagePath, yamlPath;
+	std::string imagePath;
 
 	if (!start_flag) return;
 
@@ -72,38 +75,38 @@ void callback(const nav_msgs::OccupancyGridConstPtr& data){
 	// temp<<std::setw(4)<<std::setfill('0')<<cnt;
 
 	imagePath = path + std::to_string(cnt) +".jpg";
-	yamlPath = path + std::to_string(cnt) +".yaml";
+	// yamlPath = path + std::to_string(cnt) +".yaml";
 
-	offset_x = int(origin_x/resolution);
-	offset_y = int(origin_y/resolution);
+	// offset_x = int(origin_x/resolution);
+	// offset_y = int(origin_y/resolution);
 
-	target_image_size = 1000;
-	scale = target_image_size;
-	factor = 1;
+	// target_image_size = 1000;
+	// scale = target_image_size;
+	// factor = 1;
 
-	while(1){
-	if ((-offset_x < scale/2) && (-offset_y < scale/2) && (w+offset_x < scale/2) && (h+offset_y < scale/2)) 
-			break;	
-		scale = scale * 2;
-		factor = factor * 2;	
-	}
+	// while(1){
+	// if ((-offset_x < scale/2) && (-offset_y < scale/2) && (w+offset_x < scale/2) && (h+offset_y < scale/2)) 
+	// 		break;	
+	// 	scale = scale * 2;
+	// 	factor = factor * 2;	
+	// }
 
-	map_resolution = resolution;
-	map_origin_x = origin_x;
-	map_origin_y = origin_y;
+	// map_resolution = resolution;
+	// map_origin_x = origin_x;
+	// map_origin_y = origin_y;
 
-	std::ofstream LogWriter;
-	LogWriter.open(yamlPath);	
-	LogWriter<<"free_thresh: 0.196\n";
-	LogWriter<<"image: " + imagePath + "\n";
-	LogWriter<<"negate: 0\n";
-	LogWriter<<"occupied_thresh: 0.65\n";
-	LogWriter<<"origin:\n";
-	LogWriter<<"- " + std::to_string(map_origin_x) + "\n";
-	LogWriter<<"- " + std::to_string(map_origin_y) + "\n";
-	LogWriter<<"- " + std::to_string(0.0) + "\n";
-	LogWriter<<"resolution: "+ std::to_string(map_resolution);
-	LogWriter.close();
+	// std::ofstream LogWriter;
+	// LogWriter.open(yamlPath);	
+	// LogWriter<<"free_thresh: 0.196\n";
+	// LogWriter<<"image: " + imagePath + "\n";
+	// LogWriter<<"negate: 0\n";
+	// LogWriter<<"occupied_thresh: 0.65\n";
+	// LogWriter<<"origin:\n";
+	// LogWriter<<"- " + std::to_string(map_origin_x) + "\n";
+	// LogWriter<<"- " + std::to_string(map_origin_y) + "\n";
+	// LogWriter<<"- " + std::to_string(0.0) + "\n";
+	// LogWriter<<"resolution: "+ std::to_string(map_resolution);
+	// LogWriter.close();
 
   std::vector<uint8_t> cdata_np(data->data.begin(), data->data.end());
 
@@ -116,7 +119,7 @@ void callback(const nav_msgs::OccupancyGridConstPtr& data){
       cdata_np[i] = ~(uint8_t)((unsigned)temp <= 255 ? temp : temp > 0 ? 255 : 0); 
   }
 
-  save_image(cdata_np, imagePath, w, h, 95);
+  save_image(cdata_np, imagePath, w, h, 100);
 
 	cnt = (cnt+1)%5;
 }
