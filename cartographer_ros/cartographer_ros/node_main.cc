@@ -31,7 +31,7 @@ DEFINE_string(configuration_basename, "",
 DEFINE_string(load_state_filename, "",
               "If non-empty, filename of a .pbstream file to load, containing "
               "a saved SLAM state.");
-DEFINE_bool(load_frozen_state, true,
+DEFINE_bool(load_frozen_state, false,
             "Load the saved state as frozen (non-optimized) trajectories.");
 DEFINE_bool(
     start_trajectory_with_default_topics, true,
