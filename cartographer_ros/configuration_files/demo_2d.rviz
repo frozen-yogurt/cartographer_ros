@@ -79,7 +79,7 @@ Visualization Manager:
           Value: true
         vertical_laser_link:
           Value: true
-      Marker Scale: 1
+      Marker Scale: 6
       Name: TF
       Show Arrows: true
       Show Axes: true
