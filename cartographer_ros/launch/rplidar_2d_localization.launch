@@ -14,6 +14,7 @@
           -load_state_filename $(arg load_state_filename)"
       output="screen">
     <remap from="echoes" to="horizontal_laser_2d" />
+    <remap from="landmark" to="landmark_mapping" />
   </node>
 
   <node name="cartographer_map_store" pkg="cartographer_ros"
