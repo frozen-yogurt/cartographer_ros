@@ -40,10 +40,19 @@ DEFINE_string(
     save_state_filename, "",
     "If non-empty, serialize state and write it to disk before shutting down.");
 
+DEFINE_double(external_x, 0.0,
+"user specified robot location x");
+
+DEFINE_double(external_y, 0.0,
+"user specified robot location y");
+
+DEFINE_double(external_theta, 0.0,
+"user specified robot orientation");
+
 namespace cartographer_ros {
 namespace {
 
-void Run() {
+void Run(float external_x, float external_y, float external_theta) {
   constexpr double kTfBufferCacheTimeInSeconds = 10.;
   tf2_ros::Buffer tf_buffer{::ros::Duration(kTfBufferCacheTimeInSeconds)};
   tf2_ros::TransformListener tf(tf_buffer);
@@ -62,6 +71,29 @@ void Run() {
 
   if (FLAGS_start_trajectory_with_default_topics) {
     node.StartTrajectoryWithDefaultTopics(trajectory_options);
+
+    //int64_t timestamp = cartographer::common::ToUniversal(FromRos(ros::Time::now()));
+    cartographer::transform::proto::Rigid3d relative_pose =
+      cartographer::transform::ToProto(cartographer::transform::Rigid3d::Identity());
+    // we only use the 2d transform, so just set x, y, and pitch for rotation
+    relative_pose.mutable_translation()->set_x(external_x);
+    relative_pose.mutable_translation()->set_y(external_y);
+    relative_pose.mutable_rotation()->set_z(sin(external_theta * 0.5));
+    relative_pose.mutable_rotation()->set_w(cos(external_theta * 0.5));
+
+    *trajectory_options.trajectory_builder_options
+      .mutable_initial_trajectory_pose()
+      ->mutable_relative_pose() = relative_pose;
+    trajectory_options.trajectory_builder_options
+      .mutable_initial_trajectory_pose()
+      ->set_to_trajectory_id(0);
+    // set the pose relative to the first node in the trajectory
+    trajectory_options.trajectory_builder_options
+      .mutable_initial_trajectory_pose()
+      ->set_timestamp(0);
+
+    LOG(INFO) << "set initial pose: "
+              << trajectory_options.trajectory_builder_options.initial_trajectory_pose().DebugString();
   }
 
   ::ros::spin();
@@ -90,6 +122,6 @@ int main(int argc, char** argv) {
   ::ros::start();
 
   cartographer_ros::ScopedRosLogSink ros_log_sink;
-  cartographer_ros::Run();
+  cartographer_ros::Run(FLAGS_external_x, FLAGS_external_y, FLAGS_external_theta,);
   ::ros::shutdown();
 }
