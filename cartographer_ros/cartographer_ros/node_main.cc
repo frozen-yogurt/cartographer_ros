@@ -67,17 +67,13 @@ void Run(float external_x, float external_y, float external_theta) {
   Node node(node_options, std::move(map_builder), &tf_buffer);
   if (!FLAGS_load_state_filename.empty()) {
     node.LoadState(FLAGS_load_state_filename, FLAGS_load_frozen_state);
-  }
-
-  if (FLAGS_start_trajectory_with_default_topics) {
-    node.StartTrajectoryWithDefaultTopics(trajectory_options);
 
     //int64_t timestamp = cartographer::common::ToUniversal(FromRos(ros::Time::now()));
     cartographer::transform::proto::Rigid3d relative_pose =
       cartographer::transform::ToProto(cartographer::transform::Rigid3d::Identity());
     // we only use the 2d transform, so just set x, y, and pitch for rotation
-    relative_pose.mutable_translation()->set_x(external_x);
-    relative_pose.mutable_translation()->set_y(external_y);
+    relative_pose.mutable_translation()->set_x(-20.0);
+    relative_pose.mutable_translation()->set_y(89.0);
     relative_pose.mutable_rotation()->set_z(sin(external_theta * 0.5));
     relative_pose.mutable_rotation()->set_w(cos(external_theta * 0.5));
 
@@ -94,6 +90,10 @@ void Run(float external_x, float external_y, float external_theta) {
 
     LOG(INFO) << "xx "
               << trajectory_options.trajectory_builder_options.initial_trajectory_pose().ShortDebugString();
+  }
+
+  if (FLAGS_start_trajectory_with_default_topics) {
+    node.StartTrajectoryWithDefaultTopics(trajectory_options);
   }
 
   ::ros::spin();
