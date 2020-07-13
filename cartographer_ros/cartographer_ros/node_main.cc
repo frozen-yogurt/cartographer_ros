@@ -92,8 +92,8 @@ void Run(float external_x, float external_y, float external_theta) {
       .mutable_initial_trajectory_pose()
       ->set_timestamp(0);
 
-    LOG(INFO) << "set initial pose: "
-              << trajectory_options.trajectory_builder_options.initial_trajectory_pose().DebugString();
+    LOG(INFO) << "xx "
+              << trajectory_options.trajectory_builder_options.initial_trajectory_pose().ShortDebugString();
   }
 
   ::ros::spin();
@@ -122,6 +122,6 @@ int main(int argc, char** argv) {
   ::ros::start();
 
   cartographer_ros::ScopedRosLogSink ros_log_sink;
-  cartographer_ros::Run(FLAGS_external_x, FLAGS_external_y, FLAGS_external_theta,);
+  cartographer_ros::Run(FLAGS_external_x, FLAGS_external_y, FLAGS_external_theta);
   ::ros::shutdown();
 }
