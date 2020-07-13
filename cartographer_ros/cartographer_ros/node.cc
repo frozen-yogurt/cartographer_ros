@@ -101,6 +101,9 @@ Node::Node(
   constraint_list_publisher_ =
       node_handle_.advertise<::visualization_msgs::MarkerArray>(
           kConstraintListTopic, kLatestOnlyPublisherQueueSize);
+  pose_publisher_ =
+      node_handle_.advertise<geometry_msgs::TransformStamped>(
+          kPoseTopic, kLatestOnlyPublisherQueueSize);
   service_servers_.push_back(node_handle_.advertiseService(
       kSubmapQueryServiceName, &Node::HandleSubmapQuery, this));
   service_servers_.push_back(node_handle_.advertiseService(
@@ -206,6 +209,18 @@ void Node::PublishTrajectoryStates(const ::ros::WallTimerEvent& timer_event) {
       }
       extrapolator.AddPose(trajectory_state.local_slam_data->time,
                            trajectory_state.local_slam_data->local_pose);
+
+      if (trajectory_state.published_to_tracking != nullptr &&
+          pose_publisher_ != NULL && pose_publisher_.getNumSubscribers() > 0) {
+        geometry_msgs::TransformStamped pose_transform;
+        pose_transform.header.stamp = ToRos(trajectory_state.local_slam_data->time);
+        pose_transform.header.frame_id = node_options_.map_frame;
+        pose_transform.child_frame_id = trajectory_state.trajectory_options.published_frame;
+        pose_transform.transform = ToGeometryMsgTransform(
+          trajectory_state.local_to_map * trajectory_state.local_slam_data->local_pose *
+          (*trajectory_state.published_to_tracking));
+        pose_publisher_.publish(pose_transform);
+      }
     }
 
     geometry_msgs::TransformStamped stamped_transform;
