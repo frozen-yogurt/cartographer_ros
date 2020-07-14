@@ -72,8 +72,8 @@ void Run(float external_x, float external_y, float external_theta) {
     cartographer::transform::proto::Rigid3d relative_pose =
       cartographer::transform::ToProto(cartographer::transform::Rigid3d::Identity());
     // we only use the 2d transform, so just set x, y, and pitch for rotation
-    relative_pose.mutable_translation()->set_x(-20.0);
-    relative_pose.mutable_translation()->set_y(89.0);
+    relative_pose.mutable_translation()->set_x(external_x);
+    relative_pose.mutable_translation()->set_y(external_y);
     relative_pose.mutable_rotation()->set_z(sin(external_theta * 0.5));
     relative_pose.mutable_rotation()->set_w(cos(external_theta * 0.5));
 
