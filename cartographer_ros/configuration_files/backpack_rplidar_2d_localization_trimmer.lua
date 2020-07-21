@@ -19,7 +19,7 @@ TRAJECTORY_BUILDER.overlapping_submaps_trimmer_2d = {
   -- same cell, trim after the latest 'fresh_submaps_count'
   fresh_submaps_count = 1,
   -- submap convers area < min_covered_area might be trimmed
-  min_covered_area = 4,
+  min_covered_area = 5,
   -- submap not be trimmed > min_added_submaps_count to continue trimming
   min_added_submaps_count = 1,
 }

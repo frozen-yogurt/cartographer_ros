@@ -14,7 +14,7 @@
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
-          -configuration_basename backpack_rplidar_2d_localization.lua
+          -configuration_basename backpack_rplidar_2d_localization_trimmer.lua
           -load_state_filename $(arg load_state_filename)
           -external_x $(arg external_x)
           -external_y $(arg external_y)
