@@ -12,7 +12,7 @@
 static bool start_flag = false;
 
 static int cnt = 0;
-static std::string path = "/home/fan/ros_ws/trim/mappng/";
+static std::string path = "/home/fan/2d/trim/mappng/";
 
 void check_submap_list(const cartographer_ros_msgs::SubmapListConstPtr& submap_list){
   if (start_flag) return;
