@@ -66,6 +66,7 @@ include_directories(
 set(GTEST_FOUND TRUE)
 set(GTEST_INCLUDE_DIRS ${GMOCK_INCLUDE_DIRS})
 set(GTEST_LIBRARIES ${GMOCK_LIBRARIES})
+# Turn of GRPC for now
 # set(BUILD_GRPC ON)
 
 catkin_package(
