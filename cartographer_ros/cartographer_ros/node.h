@@ -49,6 +49,7 @@
 #include "sensor_msgs/NavSatFix.h"
 #include "sensor_msgs/PointCloud2.h"
 #include "tf2_ros/transform_broadcaster.h"
+#include "std_srvs/Empty.h"
 
 namespace cartographer_ros {
 
@@ -136,8 +137,12 @@ class Node {
   bool HandleFinishTrajectory(
       cartographer_ros_msgs::FinishTrajectory::Request& request,
       cartographer_ros_msgs::FinishTrajectory::Response& response);
-  bool HandleWriteState(cartographer_ros_msgs::WriteState::Request& request,
-                        cartographer_ros_msgs::WriteState::Response& response);
+  bool HandleWriteState(
+      cartographer_ros_msgs::WriteState::Request& request,
+      cartographer_ros_msgs::WriteState::Response& response);
+  bool HandleShutDown(
+      std_srvs::Empty::Request& request,
+      std_srvs::Empty::Response& response);
   // Returns the set of SensorIds expected for a trajectory.
   // 'SensorId::id' is the expected ROS topic name.
   std::set<::cartographer::mapping::TrajectoryBuilderInterface::SensorId>

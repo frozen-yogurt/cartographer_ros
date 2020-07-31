@@ -164,3 +164,14 @@ if (${BUILD_GRPC})
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   )
 endif()
+
+google_binary(cartographer_node_finish_monitor
+  SRCS
+    node_finish_monitor.cc
+)
+
+install(TARGETS cartographer_node_finish_monitor
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

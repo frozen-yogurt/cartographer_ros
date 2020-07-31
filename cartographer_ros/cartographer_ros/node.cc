@@ -16,6 +16,7 @@
 
 #include "cartographer_ros/node.h"
 
+#include <thread>
 #include <chrono>
 #include <string>
 #include <vector>
@@ -112,6 +113,8 @@ Node::Node(
       kFinishTrajectoryServiceName, &Node::HandleFinishTrajectory, this));
   service_servers_.push_back(node_handle_.advertiseService(
       kWriteStateServiceName, &Node::HandleWriteState, this));
+  service_servers_.push_back(node_handle_.advertiseService(
+      kShutDownServiceName, &Node::HandleShutDown, this));
 
   scan_matched_point_cloud_publisher_ =
       node_handle_.advertise<sensor_msgs::PointCloud2>(
@@ -591,11 +594,27 @@ bool Node::HandleWriteState(
   return true;
 }
 
+bool Node::HandleShutDown(
+    std_srvs::Empty::Request& request, 
+    std_srvs::Empty::Response& response) {
+  LOG(INFO) << "Shut Down Signal Received. Shut Down in " 
+            << kShutDownNodeDelaySecond << " sec.";
+  std::thread shutDownThread([]() {
+    std::this_thread::sleep_for(std::chrono::seconds(kShutDownNodeDelaySecond));
+    LOG(INFO) << "NODE SHUT DOWN...";
+    ::ros::shutdown();
+  });
+  shutDownThread.detach();
+  return true;
+}
+
 void Node::FinishAllTrajectories() {
+  std::cout << "xx finish all trajectories" << std::endl;
   carto::common::MutexLocker lock(&mutex_);
   for (auto& entry : is_active_trajectory_) {
     const int trajectory_id = entry.first;
     if (entry.second) {
+      std::cout << "xx finishing trajectory " << trajectory_id << std::endl;
       CHECK_EQ(FinishTrajectoryUnderLock(trajectory_id).code,
                cartographer_ros_msgs::StatusCode::OK);
     }

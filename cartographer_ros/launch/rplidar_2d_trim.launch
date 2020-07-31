@@ -24,8 +24,8 @@
     <remap from="landmark" to="landmark_mapping" />
   </node>
 
-  <node name="cartographer_map_store" pkg="cartographer_ros"
-      type="cartographer_map_store" output="screen"/>
+  <!-- <node name="cartographer_map_store" pkg="cartographer_ros"
+      type="cartographer_map_store" output="screen"/> -->
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
       type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
@@ -35,4 +35,8 @@
 
   <node name="playbag" pkg="rosbag" type="play" 
       args="--clock $(arg bag_filename)" />
+
+  <node name="cartographer_node_finish_monitor" pkg="cartographer_ros" 
+      type="cartographer_node_finish_monitor" output="screen" 
+      args="-bag_filename $(arg bag_filename)" />
 </launch>
