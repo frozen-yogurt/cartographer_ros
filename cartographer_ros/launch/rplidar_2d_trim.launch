@@ -2,6 +2,7 @@
   <arg name="external_x" default="0" />
   <arg name="external_y" default="0" />
   <arg name="external_theta" default="0" />
+  <arg name="save_state_filename" default="" />
 
   <param name="/use_sim_time" value="true" />
 
@@ -16,6 +17,7 @@
           -configuration_directory $(find cartographer_ros)/configuration_files
           -configuration_basename backpack_rplidar_2d_localization_trimmer.lua
           -load_state_filename $(arg load_state_filename)
+          -save_state_filename $(arg save_state_filename)
           -external_x $(arg external_x)
           -external_y $(arg external_y)
           -external_theta $(arg external_theta)"

@@ -33,11 +33,12 @@ int main(int argc, char** argv) {
     LOG(INFO) << "Opening bag file " << FLAGS_bag_filename;
     bag.open(FLAGS_bag_filename, rosbag::bagmode::Read);
     rosbag::View view(bag);
-    const double duration_in_seconds = (view.getEndTime() - view.getBeginTime()).toSec();
+    const double bag_duration = (view.getEndTime() - view.getBeginTime()).toSec();
     bag.close();
-    LOG(INFO) << FLAGS_bag_filename << " duration is " << duration_in_seconds << " sec.";
-    std::chrono::seconds duration((int)duration_in_seconds + cartographer_ros::kSignalFinishDelaySecond);
-    std::this_thread::sleep_for(duration);
+    LOG(INFO) << FLAGS_bag_filename << " duration is " << bag_duration << "s";
+    int total_duration = (int)bag_duration + cartographer_ros::kSignalFinishDelaySecond;
+    std::chrono::seconds sleep_duration(total_duration);
+    std::this_thread::sleep_for(sleep_duration);
     LOG(INFO) << "Timeout reached, sending finish signal to cartographer_node...";
     if(!client.call(srv)) {
       LOG(WARNING) << "Cartographer_node failed receiving signal";
