@@ -47,7 +47,7 @@ constexpr double kConstraintPublishPeriodSec = 0.5;
 constexpr int kInfiniteSubscriberQueueSize = 0;
 constexpr int kLatestOnlyPublisherQueueSize = 1;
 constexpr int kSignalFinishDelaySecond = 30;
-constexpr int kShutDownNodeDelaySecond = 5;
+constexpr int kShutDownNodeDelaySecond = 1;
 
 // For multiple topics adds numbers to the topic name and returns the list.
 std::vector<std::string> ComputeRepeatedTopicNames(const std::string& topic,
