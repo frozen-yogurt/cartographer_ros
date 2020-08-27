@@ -22,8 +22,9 @@
           -external_y $(arg external_y)
           -external_theta $(arg external_theta)"
       required="true" output="screen">
-    <remap from="echoes" to="horizontal_laser_2d" />
-    <remap from="landmark" to="landmark_mapping" />
+    <remap from="scan" to="scan_undistortion" />
+    <remap from="odom" to="odom_filtered" />
+    <remap from="landmark" to="landmark_localization" />
   </node>
 
   <!-- <node name="cartographer_map_store" pkg="cartographer_ros"
